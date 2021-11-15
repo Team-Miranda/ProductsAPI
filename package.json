@@ -1,0 +1,19 @@
+{
+  "name": "productsapi",
+  "version": "1.0.0",
+  "description": "Back-end component for storing and serving products data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Miranda/ProductsAPI.git"
+  },
+  "author": "Amitt Dosanjh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Miranda/ProductsAPI/issues"
+  },
+  "homepage": "https://github.com/Team-Miranda/ProductsAPI#readme"
+}
