@@ -4,7 +4,8 @@
   "description": "Back-end component for storing and serving products data.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start":"nodemon ./server"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Team-Miranda/ProductsAPI/issues"
   },
-  "homepage": "https://github.com/Team-Miranda/ProductsAPI#readme"
+  "homepage": "https://github.com/Team-Miranda/ProductsAPI#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  }
 }
