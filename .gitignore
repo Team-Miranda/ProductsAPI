@@ -1,1 +1,4 @@
 /node_modules
+/CSV
+.env
+.DS_Store
