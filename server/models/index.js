@@ -72,19 +72,3 @@ module.exports = {
 //   LEFT JOIN skus ON styles.id = skus.style_id
 //   WHERE styles.products_id = $1
 //   GROUP BY styles.id;`;
-
-// for (const style of styles.rows) {
-//   photos.push(pool.query(queryStringPhotos, [style.id]));
-//   skus.push(pool.query(queryStringSKUs, [style.id]));
-// }
-// let result = await Promise.all([...photos, ...skus]);
-// result = result.map((item) => item.rows);
-
-/*
-style = {
-  details: ...,
-  photos: [{thmb, url}]
-  skus: {sku: {quant, size}, }
-
-}
-*/

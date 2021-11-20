@@ -40,7 +40,6 @@ app.get("/products/:product_id/styles", (req, res) => {
       res.status(200).json(data);
     })
     .catch((err) => {
-      console.error(err);
       res.status(500).send(err);
     });
 });
@@ -49,8 +48,11 @@ app.get("/products/:product_id/styles", (req, res) => {
 app.get("/products/:product_id/related", (req, res) => {
   let { product_id } = req.params;
   getRelated(product_id)
-    .then((data) => {
-      res.status(200).json(data);
+    .then(({ rows }) => {
+      const related_ids = rows.map(
+        ({ related_product_id }) => related_product_id
+      );
+      res.status(200).json(related_ids);
     })
     .catch((err) => {
       console.error(err);
