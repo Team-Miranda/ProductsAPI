@@ -34,7 +34,6 @@ module.exports = {
       try {
         let styles = await pool.query(queryStringStyles, [id]);
         const style_ids = styles.rows.map((style) => style.id);
-        console.log(style_ids);
         const minmax = [style_ids[0], style_ids[style_ids.length - 1]];
         const result = await Promise.all([
           pool.query(queryStringPhotos, minmax),
