@@ -80,6 +80,7 @@ ALTER TABLE related_products
   ADD CONSTRAINT products_related_products
     FOREIGN KEY (current_product_id) REFERENCES products (id);
 
+
 COPY products FROM '/Users/amitt_dosanjh/SDC/ProductsAPI/CSV/product.csv' DELIMITER ',' CSV HEADER;
 
 COPY features FROM '/Users/amitt_dosanjh/SDC/ProductsAPI/CSV/features.csv' DELIMITER ',' CSV HEADER;
@@ -91,3 +92,18 @@ COPY styles FROM '/Users/amitt_dosanjh/SDC/ProductsAPI/CSV/styles.csv' DELIMITER
 COPY photos FROM '/Users/amitt_dosanjh/SDC/ProductsAPI/CSV/photos.csv' DELIMITER ',' CSV HEADER;
 
 COPY skus FROM '/Users/amitt_dosanjh/SDC/ProductsAPI/CSV/skus.csv' DELIMITER ',' CSV HEADER;
+
+CREATE INDEX idx_photo_style
+ON photos(style_id);
+
+CREATE INDEX idx_sku_style
+ON skus(style_id);
+
+CREATE INDEX idx_related_products
+ON related_products(current_product_id);
+
+CREATE INDEX idx_product_styles
+ON styles(products_id);
+
+CREATE INDEX idx_product_features
+ON features(products_id)
