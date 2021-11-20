@@ -41,7 +41,7 @@ app.get("/products/:product_id/styles", (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.send(500).send(err);
+      res.status(500).send(err);
     });
 });
 

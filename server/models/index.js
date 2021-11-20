@@ -1,5 +1,6 @@
 const pool = require("../db");
 const Promise = require("bluebird");
+const { stylesDataFormatter } = require("../helpers");
 
 module.exports = {
   getProducts: (page, count) => {
@@ -25,25 +26,31 @@ module.exports = {
     const queryStringStyles =
       'SELECT id, name, original_price, sale_price, "default?" FROM styles WHERE products_id=$1;';
     const queryStringPhotos =
-      "SELECT style_id, thumbnail_url, url FROM photos WHERE style_id=$1;";
+      "SELECT style_id, thumbnail_url, url FROM photos WHERE style_id BETWEEN $1 AND $2;";
     const queryStringSKUs =
-      "SELECT style_id, id, size, quantity FROM skus WHERE style_id=$1;";
-    const photos = [];
-    const skus = [];
+      "SELECT style_id, id, size, quantity FROM skus WHERE style_id BETWEEN $1 AND $2;";
 
     const getStylesWithData = async () => {
       try {
-        const styles = await pool.query(queryStringStyles, [id]);
-        for (const style of styles.rows) {
-          photos.push(pool.query(queryStringPhotos, [style.id]));
-          skus.push(pool.query(queryStringSKUs, [style.id]));
-        }
-        let result = await Promise.all([...photos, ...skus]);
-        result = result.map((item) => item.rows);
+        let styles = await pool.query(queryStringStyles, [id]);
+        const style_ids = styles.rows.map((style) => style.id);
+        console.log(style_ids);
+        const minmax = [style_ids[0], style_ids[style_ids.length - 1]];
+        const result = await Promise.all([
+          pool.query(queryStringPhotos, minmax),
+          pool.query(queryStringSKUs, minmax),
+        ]);
 
-        return [styles.rows, result];
+        let [photos, skus] = result;
+        photos = photos.rows;
+        skus = skus.rows;
+        styles = styles.rows;
+
+        styles = stylesDataFormatter(id, styles, photos, skus);
+
+        return styles;
       } catch (err) {
-        return err;
+        throw err;
       }
     };
 
@@ -65,3 +72,19 @@ module.exports = {
 //   LEFT JOIN skus ON styles.id = skus.style_id
 //   WHERE styles.products_id = $1
 //   GROUP BY styles.id;`;
+
+// for (const style of styles.rows) {
+//   photos.push(pool.query(queryStringPhotos, [style.id]));
+//   skus.push(pool.query(queryStringSKUs, [style.id]));
+// }
+// let result = await Promise.all([...photos, ...skus]);
+// result = result.map((item) => item.rows);
+
+/*
+style = {
+  details: ...,
+  photos: [{thmb, url}]
+  skus: {sku: {quant, size}, }
+
+}
+*/
