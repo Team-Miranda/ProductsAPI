@@ -1,11 +1,14 @@
 require("dotenv").config();
+
 const express = require("express");
 const morgan = require("morgan");
 const compression = require("compression");
 const NodeCache = require("node-cache");
-const { PORT: port } = process.env;
+
 const db = require("./db");
 const { getProducts, getProduct, getStyles, getRelated } = require("./models");
+
+const { PORT: port } = process.env;
 
 const app = express();
 
@@ -14,6 +17,7 @@ app.use(express.json());
 app.use(
   compression({
     level: 6,
+    threshold: 0,
   })
 );
 
