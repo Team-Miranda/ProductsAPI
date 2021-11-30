@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const compression = require("compression");
+const path = require("path");
 const NodeCache = require("node-cache");
 
 const db = require("./db");
@@ -20,6 +21,7 @@ app.use(
     threshold: 0,
   })
 );
+app.use(express.static("public"));
 
 const cache = new NodeCache({ stdTTL: 100 });
 
