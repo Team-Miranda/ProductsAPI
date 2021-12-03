@@ -29,25 +29,41 @@ module.exports = {
       "SELECT style_id, thumbnail_url, url FROM photos WHERE style_id BETWEEN $1 AND $2;";
     const queryStringSKUs =
       "SELECT style_id, id, size, quantity FROM skus WHERE style_id BETWEEN $1 AND $2;";
+    const bigAssQueryString = `SELECT row_to_json(style) AS results
+      FROM (
+        SELECT a.id, a.name, a.original_price, a.sale_price, a."default?",
+        (SELECT json_agg(photos)
+          FROM (
+            SELECT photos.url, photos.thumbnail_url FROM photos WHERE photos.style_id = a.id) photos) AS photos,
+            (SELECT json_object_agg(
+              s.id, (SELECT json_build_object("quantity", s.quantity, "size", s.size)
+              FROM skus LIMIT 1)
+            ) skus
+            FROM skus s WHERE s.style_id=a.id)
+            FROM styles AS a)
+              style WHERE id=$1;`;
 
     const getStylesWithData = async () => {
       try {
-        let styles = await pool.query(queryStringStyles, [id]);
-        const style_ids = styles.rows.map((style) => style.id);
-        const minmax = [style_ids[0], style_ids[style_ids.length - 1]];
-        const result = await Promise.all([
-          pool.query(queryStringPhotos, minmax),
-          pool.query(queryStringSKUs, minmax),
-        ]);
+        // let styles = await pool.query(queryStringStyles, [id]);
+        // const style_ids = styles.rows.map((style) => style.id);
+        // const minmax = [style_ids[0], style_ids[style_ids.length - 1]];
+        // const result = await Promise.all([
+        //   pool.query(queryStringPhotos, minmax),
+        //   pool.query(queryStringSKUs, minmax),
+        // ]);
 
-        let [photos, skus] = result;
-        photos = photos.rows;
-        skus = skus.rows;
-        styles = styles.rows;
+        // let [photos, skus] = result;
+        // photos = photos.rows;
+        // skus = skus.rows;
+        // styles = styles.rows;
 
-        styles = stylesDataFormatter(id, styles, photos, skus);
+        // styles = stylesDataFormatter(id, styles, photos, skus);
 
-        return styles;
+        // return styles;
+
+        let { rows: style } = await pool.query(bigAssQueryString, [id]);
+        return style[0];
       } catch (err) {
         throw err;
       }

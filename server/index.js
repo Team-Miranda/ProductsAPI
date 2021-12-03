@@ -13,14 +13,15 @@ const { PORT: port } = process.env;
 
 const app = express();
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
+
 app.use(express.json());
-app.use(
-  compression({
-    level: 6,
-    threshold: 0,
-  })
-);
+// app.use(
+//   compression({
+//     level: 6,
+//     threshold: 0,
+//   })
+// );
 app.use(express.static("public"));
 
 const cache = new NodeCache({ stdTTL: 100 });
@@ -85,7 +86,6 @@ app.get("/products/:product_id/related", (req, res) => {
       res.status(200).json(related_ids);
     })
     .catch((err) => {
-      console.error(err);
       res.send(500).send(err);
     });
 });
