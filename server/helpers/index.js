@@ -25,4 +25,9 @@ module.exports = {
       results: styles,
     };
   },
+  formatProductData: (data) => {
+    const [products, features] = data.map((snip) => snip.rows);
+    products.features = features;
+    return products;
+  },
 };

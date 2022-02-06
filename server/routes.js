@@ -1,7 +1,11 @@
-var controller = require("./controllers");
-var router = require("express").Router();
+const router = require("express").Router();
+const controller = require("./controllers");
 
-//Connect controller methods to their corresponding routes
-router.get("/messages", controller.messages.get);
+router.use(controller.checkCache);
+
+router.get("/", controller.getProducts);
+router.get("/:product_id", controller.getProduct);
+router.get("/:product_id/styles", controller.getStyles);
+router.get("/:product_id/related", controller.getRelated);
 
 module.exports = router;

@@ -43,33 +43,17 @@ module.exports = {
             FROM styles AS a)
               style WHERE id=$1;`;
 
-    const getStylesWithData = async () => {
-      try {
-        // let styles = await pool.query(queryStringStyles, [id]);
-        // const style_ids = styles.rows.map((style) => style.id);
-        // const minmax = [style_ids[0], style_ids[style_ids.length - 1]];
-        // const result = await Promise.all([
-        //   pool.query(queryStringPhotos, minmax),
-        //   pool.query(queryStringSKUs, minmax),
-        // ]);
+    return pool.query(bigAssQueryString, [id]);
+    // const getStylesWithData = async () => {
+    //   try {
+    //     let { rows: style } = await pool.query(bigAssQueryString, [id]);
+    //     return style[0];
+    //   } catch (err) {
+    //     throw err;
+    //   }
+    // };
 
-        // let [photos, skus] = result;
-        // photos = photos.rows;
-        // skus = skus.rows;
-        // styles = styles.rows;
-
-        // styles = stylesDataFormatter(id, styles, photos, skus);
-
-        // return styles;
-
-        let { rows: style } = await pool.query(bigAssQueryString, [id]);
-        return style[0];
-      } catch (err) {
-        throw err;
-      }
-    };
-
-    return getStylesWithData();
+    // return getStylesWithData();
   },
   getRelated: (id) => {
     const queryString =
