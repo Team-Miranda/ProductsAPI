@@ -3,18 +3,18 @@ config:
   phases:
     - duration: 10
       arrivalRate: 50
-      rampTo: 110
+      rampTo: 150
       name: Warm up
     - duration: 60
-      arrivalRate: 110
+      arrivalRate: 150
       name: Sustained load
 
 scenarios:
   - name: "Get requests"
     flow:
       - get:
-          url: "/products/{{$randomNumber(1,10000)}}"
+          url: "/products/{{$randomNumber(1,1000)}}"
       - get:
-          url: "/products/{{$randomNumber(1,10000)}}/styles"
+          url: "/products/{{$randomNumber(1,1000)}}/styles"
       - get:
-          url: "/products/{{$randomNumber(1,10000)}}/related"
+          url: "/products/{{$randomNumber(1,1000)}}/related"

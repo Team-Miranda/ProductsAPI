@@ -1,17 +1,14 @@
 require("dotenv").config();
+const cluster = require("cluster");
+const totalCPUs = require("os").cpus().length;
 
-const express = require("express");
-const path = require("path");
+const app = require("./app.js");
+const PORT = process.env.PORT || 3000;
 
-const db = require("./db");
-const router = require("./routes");
-
-const { PORT } = process.env;
-
-const app = express();
-
-app.use(express.json());
-app.use("/products", router);
-app.use(express.static("public"));
-
-app.listen(PORT, () => console.log(`👂 Listening on PORT ${PORT}`));
+if (cluster.isMaster) {
+  for (let i = 0; i < totalCPUs; i++) {
+    cluster.fork();
+  }
+} else {
+  app.listen(PORT, () => console.log(`👃 sniffing the web: ${PORT}`));
+}

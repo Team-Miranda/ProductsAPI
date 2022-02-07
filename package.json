@@ -4,7 +4,7 @@
   "description": "Back-end component for storing and serving products data.",
   "main": "index.js",
   "scripts": {
-    "test": "artillery quick --count 10 -n 20 http://localhost:3001/products",
+    "test": "artillery run test.yml",
     "start": "nodemon ./server"
   },
   "repository": {

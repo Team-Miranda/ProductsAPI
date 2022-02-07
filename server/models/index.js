@@ -44,16 +44,6 @@ module.exports = {
               style WHERE id=$1;`;
 
     return pool.query(bigAssQueryString, [id]);
-    // const getStylesWithData = async () => {
-    //   try {
-    //     let { rows: style } = await pool.query(bigAssQueryString, [id]);
-    //     return style[0];
-    //   } catch (err) {
-    //     throw err;
-    //   }
-    // };
-
-    // return getStylesWithData();
   },
   getRelated: (id) => {
     const queryString =
@@ -62,12 +52,3 @@ module.exports = {
     return pool.query(queryString, [id]);
   },
 };
-
-// const queryStringJoin = `SELECT styles.id, styles.name, styles.original_price, styles.sale_price, styles."default?",
-//     json_agg(json_build_object('url', photos.url, 'thumbnnail_url', photos.thumbnail_url)) AS photos,
-//     json_agg(json_build_object('SKU', skus.id, 'quantity', skus.quantity, 'size', skus.size)) AS skus
-//   FROM styles
-//   LEFT JOIN photos ON styles.id = photos.style_id
-//   LEFT JOIN skus ON styles.id = skus.style_id
-//   WHERE styles.products_id = $1
-//   GROUP BY styles.id;`;
